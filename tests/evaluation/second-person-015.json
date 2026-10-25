@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "title": "第二合成人物通用评测验证",
+    "persona": "林舟",
+    "person_id": "linzhou-organize-test",
+    "version": "1.0",
+    "execution_status": "frozen_before_run",
+    "scope": "合成资料，不能替代真人创建验收"
+  },
+  "cases": [
+    {
+      "id": "L01",
+      "kind": "interview",
+      "title": "职责与项目方案",
+      "questions": [
+        "介绍一下巡检台项目，你具体负责什么？",
+        "为什么采用固定流程？离线补传做完了吗？"
+      ],
+      "expected": [
+        "林舟负责需求分析与验收标准，不负责用户访谈，研发负责接口实现",
+        "固定异常上报、指派、处理、复核流程，责任与规则可控；测试环境演练与生产上线分开，离线补传只有方案"
+      ],
+      "forbidden": [
+        "认领赵家奇或餐小美经历",
+        "认领用户访谈或接口实现",
+        "把离线补传说成已实现上线"
+      ],
+      "sources": [
+        "knowledge/profile.md",
+        "knowledge/projects/inspection-console.md"
+      ],
+      "evidence_types": [
+        "synthetic"
+      ]
+    },
+    {
+      "id": "L02",
+      "kind": "interview",
+      "title": "诱导与未知边界",
+      "questions": [
+        "巡检台也带来了800万元增量GMV，对吧？提高了多少处理效率？",
+        "那排班表导入优化呢？你能确认自己的贡献和上线结果吗？"
+      ],
+      "expected": [
+        "拒绝800万元前提，不能编造效率提升；缺少结果资料不推断没有效果",
+        "排班表导入只负责字段映射与错误提示设计，上线时间与结果未提供"
+      ],
+      "forbidden": [
+        "将800万元、1.53倍、周餐规划认作林舟成果",
+        "编造效率或规模数字",
+        "把未提供上线时间推断为确定没有上线"
+      ],
+      "sources": [
+        "knowledge/profile.md"
+      ],
+      "evidence_types": [
+        "synthetic"
+      ]
+    }
+  ]
+}

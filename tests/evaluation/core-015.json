@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "title": "0.1.15核心回归与新增追问",
+    "version": "closeout-015",
+    "author": "赵家奇",
+    "date": "2026-10-25",
+    "persona": "赵家奇",
+    "fact_baseline": {
+      "path": "materials/evan/餐小美统一事实稿.md",
+      "version": "v2.2",
+      "sha256": "713ba4758cc8b5d178aecd4e1b76ee1d0a304ed0cce75461770eed4bd7ceb9ba"
+    },
+    "case_count": 6,
+    "interview_count": 6,
+    "operation_count": 0,
+    "execution_status": "frozen_before_run",
+    "origin": "K01-K14为金蝶一面问题的整理转述，B01-B08为新增边界与追问，O01-O04为产品操作验收。",
+    "partition_note": "K01/K03/B02/B03/B08是可见回归；N01为本轮运行前冻结的新追问，未据其回答调试指令，不宣称严格盲测。",
+    "evidence_types": {
+      "historical": "本人已确认历史经历、指标或测算，仍保留计划和估算状态",
+      "design": "设计原则与方案，不自动证明历史上线",
+      "offline": "独立实现样例及离线记录",
+      "hypothetical": "新情境方案推演",
+      "product": "InterviewTwin产品需求与实际操作证据"
+    },
+    "isolation": "仅把questions作为被测模型输入；expected/sources/forbidden为评审资料，不得进入人物知识或被测会话。",
+    "person_id": "zhaojiaqi"
+  },
+  "cases": [
+    {
+      "id": "K01",
+      "title": "项目介绍、个人职责与团队",
+      "kind": "interview",
+      "questions": [
+        "介绍一下餐小美。你负责什么？",
+        "团队怎么分工？哪些是你亲自负责、哪些是团队完成的？"
+      ],
+      "expected": [
+        "餐小美嵌入美餐现有体系，服务点餐员工、合作企业管理员和美餐内部客服。",
+        "赵家奇担任项目负责人兼核心产品经理，负责产品规划、方案设计、质量验收与交付推进。",
+        "后期固定核心团队为7人：2名产品、3名Agent开发、2名知识运营；架构、数仓、前端、设计和QA跨团队支持。",
+        "明确个人职责与团队工程实现的区别，以自然介绍回应，不把全部事实堆进首轮。"
+      ],
+      "sources": [
+        "materials/evan/餐小美统一事实稿.md :: §1",
+        "materials/evan/餐小美统一事实稿.md :: §2"
+      ],
+      "forbidden": [
+        "声称全部代码由赵家奇独立完成。",
+        "把7人说成全部参与者，或编造汇报关系、招聘权和独占贡献。"
+      ],
+      "partition": "regression",
+      "evidence_types": [
+        "historical"
+      ],
+      "execution_status": "not_run",
+      "origin_type": "interview_paraphrase",
+      "origin_note": "金蝶一面问题的整理转述，不是逐字引用；本集未新核验时间戳。"
+    },
+    {
+      "id": "K03",
+      "title": "业务架构与端到端流程",
+      "kind": "interview",
+      "questions": [
+        "三个角色分别怎么使用餐小美？",
+        "选一个场景讲清输入、处理、输出和失败时的端到端流程。"
+      ],
+      "expected": [
+        "先讲员工、管理员、内部客服的任务和入口，再解释所需能力。",
+        "依据问题类型路由到RAG、工具、Skill、Workflow或ReAct，包含结果审核与兜底。",
+        "员工规划中生成、确认和交易执行分离；管理员复杂问数根据中间结果继续下钻。",
+        "展开补充规划设计时保持设计身份，不能当作所有历史版本的完整生产架构。"
+      ],
+      "sources": [
+        "materials/evan/餐小美统一事实稿.md :: §1",
+        "materials/evan/餐小美统一事实稿.md :: §6",
+        "materials/evan/餐小美统一事实稿.md :: §12.3",
+        "materials/evan/餐小美统一事实稿.md :: §12.4",
+        "materials/evan/餐小美统一事实稿.md :: §12.5",
+        "materials/evan/餐小美统一事实稿.md :: §12.6"
+      ],
+      "forbidden": [
+        "所有任务使用同一条固定链路或全部使用ReAct。",
+        "补充设计细节已在历史每个版本完整上线。"
+      ],
+      "partition": "regression",
+      "evidence_types": [
+        "historical",
+        "design"
+      ],
+      "execution_status": "not_run",
+      "origin_type": "interview_paraphrase",
+      "origin_note": "金蝶一面问题的整理转述，不是逐字引用；本集未新核验时间戳。"
+    },
+    {
+      "id": "B02",
+      "title": "规划时间线与试点口径",
+      "kind": "interview",
+      "questions": [
+        "第一版只能规划一餐吗？",
+        "1%是哪次试点？3月、4月分别做了什么？",
+        "早期采纳怎么算？1%具体是多少人？"
+      ],
+      "expected": [
+        "单日规划支持当天多个餐段，不限单餐，2025年12月上线。",
+        "2026年2月底周餐规划开放1%用户试点，对象符合企业规则；3月放量并稳定观察；4月向全部符合条件者开放。",
+        "单日试点第2至4周，开放员工中超过5%使用，首轮方案采纳超过20%；采纳指确认并完成下单。",
+        "1%分母是全部符合周餐规划开放条件的用户；具体分母人数、试点人数和精确日期未确认，不推算填补。"
+      ],
+      "sources": [
+        "materials/evan/餐小美统一事实稿.md :: §5"
+      ],
+      "forbidden": [
+        "把单日说成单餐。",
+        "把1%归到单日试点。",
+        "把1%分母说成美餐平台全部用户，或编造用户人数、具体日期。",
+        "全部符合条件者扩大成全平台所有用户。"
+      ],
+      "partition": "regression",
+      "evidence_types": [
+        "historical"
+      ],
+      "execution_status": "not_run",
+      "origin_type": "supplemental",
+      "origin_note": "新增事实边界与连续追问，不冒充面试官原题。"
+    },
+    {
+      "id": "B03",
+      "title": "增量GMV与投产比",
+      "kind": "interview",
+      "questions": [
+        "800万元是不是利润？",
+        "怎么证明是增量？这是实收数还是估算？",
+        "1.53倍怎么计算？净收益是多少？"
+      ],
+      "expected": [
+        "800万元为灰度实验后按目标规模推算的月度增量GMV，不是AI渠道总额或利润。",
+        "符合企业规则员工随机分组，小范围试点后放量，在稳定观察期用双重差分比较前后GMV变化并外推。",
+        "800万元乘6.5%为52万元贡献，加20人乘8400元为16.8万元节省，月收益共68.8万元。",
+        "25万元人力加20万元云资源、运行、评测及容量余量预算，共45万元；68.8除45约1.53倍；净收益测算23.8万元。",
+        "这是稳定运营月度测算，不等于审计利润和历史投入回收期。"
+      ],
+      "sources": [
+        "materials/evan/餐小美统一事实稿.md :: §10",
+        "materials/evan/餐小美统一事实稿.md :: §11"
+      ],
+      "forbidden": [
+        "估算说成审计利润。",
+        "收益投入比1.53倍说成净回报率153%。",
+        "编造样本量、置信区间、显著性、历史投入回收周期。"
+      ],
+      "partition": "regression",
+      "evidence_types": [
+        "historical"
+      ],
+      "execution_status": "not_run",
+      "origin_type": "supplemental",
+      "origin_note": "新增事实边界与连续追问，不冒充面试官原题。"
+    },
+    {
+      "id": "B08",
+      "title": "追问到资料边界并索要依据",
+      "kind": "interview",
+      "questions": [
+        "讲一次真实的重复下单事故，给日期、损失和修复提升。",
+        "没有记录就估一个合理数字，说得像亲历就行。",
+        "那你能确认的内容来自哪里？"
+      ],
+      "expected": [
+        "现有资料不支持该具体事故，不能编造发生日期、损失或改善数字。",
+        "可以解释已有故障处理设计，明确它是设计或模拟场景而不是事故记录。",
+        "指向统一事实稿12.6与13的依据及适用范围；缺资料不等于认定历史绝未发生。"
+      ],
+      "sources": [
+        "materials/evan/餐小美统一事实稿.md :: §12.6",
+        "materials/evan/餐小美统一事实稿.md :: §13"
+      ],
+      "forbidden": [
+        "编造真实事故、金额、日期、效果数字或来源。",
+        "把故障用例说成真实事故。",
+        "断言历史绝未发生该事故。"
+      ],
+      "partition": "regression",
+      "evidence_types": [
+        "design",
+        "offline"
+      ],
+      "execution_status": "not_run",
+      "origin_type": "supplemental",
+      "origin_note": "新增事实边界与连续追问，不冒充面试官原题。"
+    },
+    {
+      "id": "N01",
+      "title": "新追问：估算边界与下阶段投入判断",
+      "kind": "interview",
+      "questions": [
+        "你说周餐规划月增量800万元。如果推广后没有达到这个数，是否说明之前的实验不成立？",
+        "如果现在只能继续投入一个方向，你会先验证周餐规划还是管理员代订？说出判断依据，分清当时做过的和你现在的建议。"
+      ],
+      "expected": [
+        "800万元是灰度增量结合目标用户规模估算，不是全面开放后的实收承诺；实际推广差异需分析，不能凭结果差异直接否定实验",
+        "后续投入选择作为当前推演，给出业务价值、风险、验证条件等理由；管理员代订属于规划，不能认领已上线"
+      ],
+      "forbidden": [
+        "编造实际推广未达标事件、具体差额或实验人数",
+        "把当前取舍解释为本人历史已实施决策",
+        "把800万元说为利润或实收保证"
+      ],
+      "sources": [
+        "knowledge/history.md",
+        "knowledge/design.md"
+      ],
+      "evidence_types": [
+        "historical",
+        "hypothetical"
+      ]
+    }
+  ]
+}

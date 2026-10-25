@@ -1,0 +1,4 @@
+interface:
+  display_name: "InterviewTwin"
+  short_description: "面试个人分身，创建自己的版本，并维护资料、升级能力与检查回答质量"
+  default_prompt: "使用 $interviewtwin，查看有哪些人物可以面试，或帮我创建自己的个人分身。"
