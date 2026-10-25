@@ -3,7 +3,7 @@
 | 作者 | 赵家奇 |
 | 日期 | 2026-10-25 |
 | 事项 | InterviewTwin |
-| 版本 | v6.3 |
+| 版本 | v6.4 |
 
 # InterviewTwin
 
@@ -58,7 +58,7 @@ InterviewTwin/
 
 打开你要使用的 **Codex、Cursor、Claude Code 或 WorkBuddy 本地代码项目**，进入准备使用的工作区，把下面这句话发给它：
 
-> 请在当前工作区，为当前 Agent 安装 https://github.com/vanci444-hue/InterviewTwin 的 Skill，初始化随包人物资料，并核验安装结果。
+> 安装 https://github.com/vanci444-hue/InterviewTwin 的 Skill
 
 在哪个 Agent 中发送，就为哪个 Agent 安装；如果 Agent 无法判断当前宿主或工作区，它会询问。Agent 负责获取仓库并按[安装说明](INSTALL.md)执行，你无需手动下载、解压或输入终端命令。宿主要求文件或执行授权时，正常确认。
 
