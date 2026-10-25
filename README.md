@@ -3,13 +3,22 @@
 | 作者 | 赵家奇 |
 | 日期 | 2026-10-25 |
 | 事项 | InterviewTwin |
-| 版本 | v6.4 |
+| 版本 | v7.4 |
 
 # InterviewTwin
 
+## Agent 安装入口（安装器 0.2.0）
+
+当前合并交付：能力0.1.21／赵家奇资料1.1.5／安装器0.2.0。安装与更新使用以下统一入口。
+
+收到“安装仓库链接的 Skill”后，先读本文件。已知宿主及当前工作区就直接使用，不扫描其他项目，不搜索电脑上的其他 Agent。仓库页面无法列出文件时，只读取该仓库默认分支的原始 INSTALL.md；可用 Git 的 `ls-remote --symref 仓库 HEAD` 确定默认分支。不要重复获取目录树。只有宿主或目标目录确实不明时才询问。
+
+固定路径：取得一次完整仓库 → 审核 scripts/get.py 与 scripts/install.py → 复用该副本安装 → 检查文件结果 → 在目标宿主确认加载。不要额外安装插件或创建新 Skill。
+
+
 让面试官通过对话了解一个人的真实经历、项目与判断方式，也支持其他人用自己的资料创建独立分身。
 
-当前交付：**能力0.1.19／赵家奇资料1.1.3**。默认人物为赵家奇，代表项目餐小美。正式仓库：https://github.com/vanci444-hue/InterviewTwin。
+当前交付：**能力0.1.21／赵家奇资料1.1.5**。默认人物为赵家奇，代表项目餐小美。正式仓库：https://github.com/vanci444-hue/InterviewTwin。
 
 ## 结构与职责
 
@@ -67,10 +76,10 @@ InterviewTwin/
 需要额外安装 Git。以下示例适用于 macOS / Linux 的终端，默认目标为 **Cursor**。先进入你准备存放 InterviewTwin 的目录，确认该目录下没有同名的 `InterviewTwin-installer` 文件夹，然后复制执行：
 
 ```sh
-git clone https://github.com/vanci444-hue/InterviewTwin.git InterviewTwin-installer && python3 InterviewTwin-installer/scripts/get.py --repo https://github.com/vanci444-hue/InterviewTwin --home "$PWD/InterviewTwin-workspace" --host cursor
+git clone https://github.com/vanci444-hue/InterviewTwin.git InterviewTwin-installer && python3 InterviewTwin-installer/scripts/get.py --source InterviewTwin-installer --repo https://github.com/vanci444-hue/InterviewTwin --home "$PWD/InterviewTwin-workspace" --host cursor
 ```
 
-这条命令先下载安装工具，再从正式仓库获取并安装当前版本。`InterviewTwin-installer` 存放下载的工具；`InterviewTwin-workspace` 是实际使用工作区，里面保存 Skill、人物资料与更新记录。安装成功后，用目标 Agent 打开 **InterviewTwin-workspace** 文件夹。
+这条命令只克隆一次完整仓库；安装器核对 origin、目标 commit 和干净状态，然后直接安装该副本，不再下载 ZIP。`InterviewTwin-installer` 存放下载的工具；`InterviewTwin-workspace` 是实际使用工作区，里面保存 Skill、人物资料与更新记录。安装成功后，用目标 Agent 打开 **InterviewTwin-workspace** 文件夹。
 
 将命令最后的 `cursor` 换成对应值即可选择其他 Agent：
 
@@ -85,7 +94,7 @@ git clone https://github.com/vanci444-hue/InterviewTwin.git InterviewTwin-instal
 
 Windows 用户可使用方式一；以上终端命令未作为 Windows 命令验证。网络访问失败时，检查 GitHub 连通性或使用下载后的本地包，详见[安装说明](INSTALL.md)。不要只用通用安装器复制 Skill 目录：本项目还需要独立人物资料初始化。
 
-若提示 `CERTIFICATE_VERIFY_FAILED`，说明 Python 的 HTTPS 证书校验未通过。macOS 使用 python.org 安装包时，可先运行对应 Python 应用目录中的 `Install Certificates.command`；其他安装方式请修复该 Python 环境的 CA 证书配置。修复后无需再次克隆，单独重跑上面 `&&` 后面的 `python3 ...` 命令即可，不要关闭证书校验。
+若提示 `CERTIFICATE_VERIFY_FAILED`，说明 Python 的 HTTPS 证书校验未通过。macOS 使用 python.org 安装包时，可先运行对应 Python 应用目录中的 `Install Certificates.command`；其他安装方式请修复该 Python 环境的 CA 证书配置。Git 正常时优先使用 Git 路径，不必修复 Python HTTPS 才能安装；只有无 Git、无 curl 而使用 Python ZIP 下载时才涉及该配置。不要关闭证书校验。
 
 ### 安装后开始使用
 

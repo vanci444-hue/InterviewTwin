@@ -210,7 +210,7 @@ def same_source(left, right):
     """下载指纹随发布变化；来源身份由仓库/ref 或本地路径决定。"""
     if not isinstance(left, dict) or not isinstance(right, dict):
         return False
-    return {k:v for k,v in left.items() if k != "archive_sha256"} == {k:v for k,v in right.items() if k != "archive_sha256"}
+    return {k:v for k,v in left.items() if k not in ("archive_sha256", "commit")} == {k:v for k,v in right.items() if k not in ("archive_sha256", "commit")}
 
 
 def distribution_profile(receipt):
@@ -285,7 +285,7 @@ def install(source: str | Path, home: str | Path, profile: str | None = "zhaojia
         moved_old = installed_new = created_release = wrote_pointer = False
         change_capability = old_cap is None or old_cap.get("files") != source_files or old_cap.get("version") != version
         wrote_records = created_helpers = False
-        if change_capability:
+        if change_capability or same_source(capability_source, source_record):
             capability_source = source_record
         try:
             # 先完整暂存并重新核验；源文件在拷贝中变化时不进入提交阶段。

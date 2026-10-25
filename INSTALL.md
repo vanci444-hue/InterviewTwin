@@ -3,9 +3,18 @@
 | 作者 | 赵家奇 |
 | 日期 | 2026-10-25 |
 | 事项 | 同一个仓库链接在不同 Agent 中安装、初始化人物及更新的执行入口 |
-| 版本 | v3.3 |
+| 版本 | v4.3 |
 
 # InterviewTwin 链接安装入口
+
+## Agent 安装入口（安装器 0.2.0）
+
+当前合并交付：能力0.1.21／赵家奇资料1.1.5／安装器0.2.0。安装与更新使用以下统一入口。
+
+收到“安装仓库链接的 Skill”后，先读本文件。已知宿主及当前工作区就直接使用，不扫描其他项目，不搜索电脑上的其他 Agent。仓库页面无法列出文件时，只读取该仓库默认分支的原始 INSTALL.md；可用 Git 的 `ls-remote --symref 仓库 HEAD` 确定默认分支。不要重复获取目录树。只有宿主或目标目录确实不明时才询问。
+
+固定路径：取得一次完整仓库 → 审核 scripts/get.py 与 scripts/install.py → 复用该副本安装 → 检查文件结果 → 在目标宿主确认加载。不要额外安装插件或创建新 Skill。
+
 
 ## 两种安装入口
 
@@ -26,10 +35,10 @@ Agent 先读取本说明和 README，确定当前宿主与目标工作区，获�
 需要额外安装 Git。以下示例适用于 macOS / Linux 的终端，默认目标为 **Cursor**。先进入你准备存放 InterviewTwin 的目录，确认该目录下没有同名的 `InterviewTwin-installer` 文件夹，然后复制执行：
 
 ```sh
-git clone https://github.com/vanci444-hue/InterviewTwin.git InterviewTwin-installer && python3 InterviewTwin-installer/scripts/get.py --repo https://github.com/vanci444-hue/InterviewTwin --home "$PWD/InterviewTwin-workspace" --host cursor
+git clone https://github.com/vanci444-hue/InterviewTwin.git InterviewTwin-installer && python3 InterviewTwin-installer/scripts/get.py --source InterviewTwin-installer --repo https://github.com/vanci444-hue/InterviewTwin --home "$PWD/InterviewTwin-workspace" --host cursor
 ```
 
-这条命令先下载安装工具，再从正式仓库获取并安装当前版本。`InterviewTwin-installer` 存放下载的工具；`InterviewTwin-workspace` 是实际使用工作区，里面保存 Skill、人物资料与更新记录。安装成功后，用目标 Agent 打开 **InterviewTwin-workspace** 文件夹。
+这条命令只克隆一次完整仓库；安装器核对 origin、目标 commit 和干净状态，然后直接安装该副本，不再下载 ZIP。`InterviewTwin-installer` 存放下载的工具；`InterviewTwin-workspace` 是实际使用工作区，里面保存 Skill、人物资料与更新记录。安装成功后，用目标 Agent 打开 **InterviewTwin-workspace** 文件夹。
 
 将命令最后的 `cursor` 换成对应值即可选择其他 Agent：
 
@@ -44,7 +53,7 @@ git clone https://github.com/vanci444-hue/InterviewTwin.git InterviewTwin-instal
 
 Windows 用户可使用方式一；以上终端命令未作为 Windows 命令验证。网络访问失败时，检查 GitHub 连通性或使用下载后的本地包，详见下方“安装执行流程”的本地包说明。不要只用通用安装器复制 Skill 目录：本项目还需要独立人物资料初始化。
 
-若提示 `CERTIFICATE_VERIFY_FAILED`，说明 Python 的 HTTPS 证书校验未通过。macOS 使用 python.org 安装包时，可先运行对应 Python 应用目录中的 `Install Certificates.command`；其他安装方式请修复该 Python 环境的 CA 证书配置。修复后无需再次克隆，单独重跑上面 `&&` 后面的 `python3 ...` 命令即可，不要关闭证书校验。
+若提示 `CERTIFICATE_VERIFY_FAILED`，说明 Python 的 HTTPS 证书校验未通过。macOS 使用 python.org 安装包时，可先运行对应 Python 应用目录中的 `Install Certificates.command`；其他安装方式请修复该 Python 环境的 CA 证书配置。Git 正常时优先使用 Git 路径，不必修复 Python HTTPS 才能安装；只有无 Git、无 curl 而使用 Python ZIP 下载时才涉及该配置。不要关闭证书校验。
 
 ## 原始资料与人物版本（本轮生效）
 
@@ -76,27 +85,28 @@ Windows 用户可使用方式一；以上终端命令未作为 Windows 命令验
 
 ## 安装执行流程
 
-1. 从当前用户给出的仓库链接读取本说明和 README，确认实际仓库；取得完整仓库或审核后的安装 ZIP 到临时目录。若网络、认证或读取受阻，报告实际原因，保留原安装，可使用本地包，不改用未知镜像。
-2. 确定当前宿主及使用工作区。Codex 使用 `codex`，Cursor 使用 `cursor`，Claude Code 使用 `claude-code`；WorkBuddy 的本地代码项目使用 `workbuddy`。不能仅凭电脑安装了某个 App 猜测当前宿主；无法确定时询问这一项。不要把作者的源码目录当接收者工作区。
-3. 检查 Python 3.10+、当前宿主所需的执行和文件权限。宿主要求的授权仍照常进行，不修改全局权限或跳过安全检查。
-4. 在下载内容中确认 `scripts/get.py`、`scripts/install.py`、`skills/interviewtwin/SKILL.md`、`profiles/zhaojiaqi/manifest.json` 存在。运行以下命令，将参数换成实际路径与宿主：
+1. 确定当前宿主与工作区，检查 Python 3.10+。宿主参数为 codex、cursor、claude-code、workbuddy。项目级目录映射保持不变。
+2. 已有本次获取并审核的完整 Git 仓库时直接复用；否则优先 Git 获取一次。不要搜索无关项目或把作者源码目录当接收者工作区。
+3. 审核两份安装脚本，在任意目录运行（路径换成绝对路径）：
 
 ```sh
-python3 scripts/get.py --repo https://github.com/OWNER/REPO --home "/实际使用工作区" --host codex
+python3 /已审核仓库/scripts/get.py --source "/已审核仓库" --repo https://github.com/OWNER/REPO --home "/实际使用工作区" --host cursor
 ```
 
-命令中的仓库必须替换为用户给出的真实来源；在已下载并审核的仓库根目录执行，或使用安装工具的绝对路径。`get.py` 会再次下载正式源包并校验安装，不是只使用首次下载的副本。此入口会记录仓库和 ref，并保留后续更新工具。离线本地包可使用 `python3 scripts/install.py --source . --home "/实际使用工作区" --host codex`，但记录的是本地路径；该路径删除后需重新提供来源，不能声称已建立 GitHub 更新链路。
+副本必须为独立仓库根目录，origin 匹配指定仓库，目标 commit 匹配 ref，且无修改或未跟踪文件。安装器从该 commit 导出内容并校验，零额外完整下载；会读取远端引用元数据，因此不是离线安装。完整 SHA 为用户明确指定的固定内容标识。HEAD/分支若在下载后移动，会明确停止，不能静默安装另一份内容。
 
-Cursor 将 `--host` 改为 `cursor`；Claude Code 将 `--host` 改为 `claude-code`；WorkBuddy 本地代码项目改为 `workbuddy`。默认安装人物赵家奇；不在安装目录中保存用户定制人物。
+4. 若只有已审核安装器而没有完整仓库，可运行同一命令但省略 `--source`：自动优先 Git，仅获取目标 commit 一次。Git 失败时不自动循环重试；确认故障后只允许明确尝试一次 `--transport zip`，仍失败就停止。无 Git 时直接进入 ZIP 路径，优先 curl，再用 Python HTTPS。所有路径保留 TLS 校验、不使用未知镜像。ZIP 路径继续限制体积、路径及链接，但没有 commit 快捷检查，更新可能再次下载完整包。
+5. 纯离线解压包使用 `python3 scripts/install.py --source /包目录 --home /工作区 --host cursor`。其来源如实记录为本地路径，不能标为可信 GitHub 来源；删除本地来源后需重新提供。
+6. 输出文件安装状态、能力与人物版本、来源 commit、完整下载次数。当前经审核的 get.py/install.py 单独保存在更新工具目录，记录内容哈希；不回退为下载包中的旧工具，不修改 Skill 或人物资料。
+7. 尝试当前会话加载；宿主不能刷新时明确提示打开目标工作区、新建会话说“使用 InterviewTwin”。文件安装通过不等于模型已加载，不循环重装来解决会话发现问题。
 
-5. 核验输出的能力版本、人物版本、安装位置及完整性。打开目标工作区，新建会话实际读取人物并回答“请介绍餐小美和你的职责”。若当前宿主不能刷新发现结果，应说明需要新建会话；不能把文件已安装说成已经加载。
-6. 保存本次真实源仓库、ref/commit（如能确认）、安装输出和使用验证结果。不得虚构已安装成功、虚构仓库地址或用作者本地资料补全缺失文件。
+失败状态含 category：dependency_or_file_missing、certificate_error、network_or_remote_error、integrity_or_source_conflict。同一错误不重复执行，不遍历电脑寻找证书，不改全局权限。缺依赖、网络、来源不一致与本地修改分别说明；原安装保留。
 
 ## 一句话更新
 
 无论通过哪种入口安装，后续都可在实际使用工作区对目标 Agent 说“更新 InterviewTwin”。不要在安装工具下载目录中误建人物工作区，也不需要重复克隆来代替正常更新。
 
-先从当前安装记录定位原来源，读取该来源最新 INSTALL.md 并审核更新入口，再执行；不能先盲跑旧工具。更新器不兼容时不得删除资料或要求用户编写命令。用户可说：“请按原安装来源的最新 INSTALL.md 更新 InterviewTwin，保留我自己创建的人物、原件和草稿，并验证实际加载版本。”默认更新原分发来源的通用能力和绑定人物资料，保留接收者自建人物、草稿和旧快照；只有明确要求“只升级能力”时使用 `--no-profile`。绑定身份来自首次安装记录，不固定写死为赵家奇。
+安装器0.2.0起，先校验当前记录中的更新工具哈希，再由保留工具检查原来源 commit；没有变化时不重新读取整仓库或下载完整包。旧安装器迁移仍先读取原来源最新 INSTALL.md，并审核新版工具，不能盲跑旧工具。更新器不兼容时不得删除资料或要求用户编写命令。用户仍只需说“更新 InterviewTwin”，迁移步骤由Agent执行。默认更新原分发来源的通用能力和绑定人物资料，保留接收者自建人物、草稿和旧快照；只有明确要求“只升级能力”时使用 `--no-profile`。绑定身份来自首次安装记录，不固定写死为赵家奇。
 
 Agent 读取工作区 `.interviewtwin/installations/<host>.json`，核对 `updater.files`，从 `updater.directory` 获取保留的 `get.py`，执行 `python3 更新工具路径/get.py --update --home 当前工作区 --host 当前宿主`。工具目录相对于工作区，不能猜测哈希名称。`distribution_profile` 记录分发人物；默认能力和该人物资料在同一事务中更新，一项校验失败不安装另一项。首次下载的临时目录可删除；GitHub 来源、ref 和下载指纹已持久保存。人物来源单独记录，不因导入另一个人物改变既有能力来源。
 
@@ -111,6 +121,14 @@ python3 scripts/get.py --repo https://github.com/OWNER/REPO --ref HEAD --home "/
 `OWNER/REPO` 必须替换为实际审核来源，默认 HEAD 跟随原仓库默认分支；维护者只将审核后的交付内容放入该分支。只有用户明确要求锁定版本时才指定 tag/commit，不能将固定 ref 的重装称为获取最新版。`--no-profile` 仅升级通用能力。下载器只支持公开 HTTPS GitHub 仓库，不接收凭据，不上传或发布。私有仓库通过宿主正常授权下载后执行本地安装。
 
 更新发现正式内容有本地修改时停止覆盖；不得删清单或删人物来强行更新。新版本文件安装与新会话加载分别验证，失败须说明旧版是否仍可用。
+
+## 安装器0.2.0的更新判定
+
+普通更新同步能力与绑定人物。Git 来源保存 repository、ref、实际 commit，来源身份比较忽略 commit 与下载指纹；同一来源的新 commit 更新来源记录，即使能力版本号未变。固定 tag/commit 保持固定，HEAD/分支检查该引用。
+
+同 commit 仅在能力、人物快照、指针和更新工具完整性通过后返回 already_current_pending_session_validation，完整下载次数为0。只有能力更新时不检查或改写人物；人物未同步时，下一次普通更新不能被同 commit 快捷判断跳过。有新 commit 获取一次，复用事务安装器；失败保护原安装、自建人物、原件、草稿与旧快照。旧记录缺 commit 时首次获取一次完成迁移。
+
+安装器独立版本为0.2.0，与能力及人物版本分别记录。更新后仍保留已经审核的工具；如未来升级安装器，需审核新版入口，不直接执行下载包里的脚本。
 
 ## 支持边界
 
