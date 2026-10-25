@@ -2,7 +2,7 @@
   "schema_version": 2,
   "person_id": "zhaojiaqi",
   "name": "赵家奇",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "files": {
     "knowledge/career.md": "3818d5f6eca8ae07563293c98b3186ff12b1a811ce74bc0e575fb7723ae0ec3d",
     "knowledge/design.md": "3b6f7a307133ea5d56d7c6473288513bdb315021e7abd00b083e1b645baa15e1",
@@ -10,7 +10,7 @@
     "knowledge/profile.md": "0746d47ba56c72ac2e2e354dbf2ecfad003563eb2ba9e1b35d4c4d85005a4e38",
     "knowledge/style.md": "85d8a75fe71bc3b7197b1d984270fb7cdf59ef7c6bf13c8321165c77df97d2f3",
     "knowledge/validation.md": "07cfd8997036a948e5bf5588e10f39aaa4bf124f8b9f257d6512ac8278259832",
-    "sources/最终简历.md": "54ecd8e322d3257753d235d23824cc3805c78ee71bc535832bf6f55be42b59b7"
+    "sources/最终简历.md": "0d763533c7baae70eff98daabaf62884ba4c73839679a0458aaef5e8bcd387b5"
   },
   "source_links": {
     "knowledge/profile.md": [
