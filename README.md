@@ -52,11 +52,9 @@ InterviewTwin/
 
 ## 一句话安装
 
-通过以下口令让 Agent 从正式仓库安装：
+对 AI 助手说：
 
-将下面这句话复制给Codex：
-
-> 请从 https://github.com/vanci444-hue/InterviewTwin 安装 InterviewTwin 到当前工作区，按 INSTALL.md 完成初始化，完成后展示可用人物和功能菜单，让我选择下一步。
+> 安装 https://github.com/vanci444-hue/InterviewTwin 的 Skill
 
 Agent负责获取仓库并完成安装，你无需手动下载、解压或执行安装命令。需要Python 3.10+、可用的宿主模型、网络访问及正常的文件与执行权限；宿主要求授权时正常确认。详细步骤由Agent读取[安装说明](INSTALL.md)。
 

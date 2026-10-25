@@ -33,7 +33,7 @@
 0.1.12及更早的保留安装器不支持schema 2。首次迁移时Agent从用户已指定的原分发来源读取新版INSTALL并审核新版安装器，使用新版`scripts/get.py --update`完成迁移；不得运行旧工具失败后删除资料强行覆盖，也不得自动执行未经审核的下载脚本。0.1.13保留的新工具之后按普通一句话更新工作。不同宿主仍分别验收。
 
 
-对用户的入口是：“请从 https://github.com/vanci444-hue/InterviewTwin 安装 InterviewTwin 到当前工作区，按 INSTALL.md 完成初始化，完成后展示可用人物和功能菜单，让我选择下一步。”
+对用户的入口是：“安装 https://github.com/vanci444-hue/InterviewTwin 的 Skill”
 
 以下步骤供收到安装请求的 Agent 执行，不要求面试官自己编辑配置。用户请求安装仅授权本地安装，不授权公开资料或发送消息。
 
