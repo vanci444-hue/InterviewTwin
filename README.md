@@ -3,7 +3,7 @@
 | 作者 | 赵家奇 |
 | 日期 | 2026-10-25 |
 | 事项 | InterviewTwin |
-| 版本 | v5.3 |
+| 版本 | v6.3 |
 
 # InterviewTwin
 
@@ -50,13 +50,44 @@ InterviewTwin/
 
 通用 Skill 与人物资料分离，支持不同人物复用；评测材料独立存放，不进入正常面试工作区。
 
-## 一句话安装
+## 安装：任选一种方式
 
-对 AI 助手说：
+两种方式都会安装通用 Skill、初始化默认人物赵家奇的资料，并保存后续更新来源。需要 Python 3.10+、可访问 GitHub 的网络，以及目标 Agent 正常的文件与执行权限；开始面试还需要该 Agent 的模型服务可用。
 
-> 安装 https://github.com/vanci444-hue/InterviewTwin 的 Skill
+### 方式一：在指定 Agent 中发一句话
 
-Agent负责获取仓库并完成安装，你无需手动下载、解压或执行安装命令。需要Python 3.10+、可用的宿主模型、网络访问及正常的文件与执行权限；宿主要求授权时正常确认。详细步骤由Agent直接读取[安装说明](INSTALL.md)。Cursor安装到当前项目的`.cursor/skills/`，同步初始化人物资料与更新来源。
+打开你要使用的 **Codex、Cursor、Claude Code 或 WorkBuddy 本地代码项目**，进入准备使用的工作区，把下面这句话发给它：
+
+> 请在当前工作区，为当前 Agent 安装 https://github.com/vanci444-hue/InterviewTwin 的 Skill，初始化随包人物资料，并核验安装结果。
+
+在哪个 Agent 中发送，就为哪个 Agent 安装；如果 Agent 无法判断当前宿主或工作区，它会询问。Agent 负责获取仓库并按[安装说明](INSTALL.md)执行，你无需手动下载、解压或输入终端命令。宿主要求文件或执行授权时，正常确认。
+
+### 方式二：在终端执行命令，指定目标 Agent
+
+需要额外安装 Git。以下示例适用于 macOS / Linux 的终端，默认目标为 **Cursor**。先进入你准备存放 InterviewTwin 的目录，确认该目录下没有同名的 `InterviewTwin-installer` 文件夹，然后复制执行：
+
+```sh
+git clone https://github.com/vanci444-hue/InterviewTwin.git InterviewTwin-installer && python3 InterviewTwin-installer/scripts/get.py --repo https://github.com/vanci444-hue/InterviewTwin --home "$PWD/InterviewTwin-workspace" --host cursor
+```
+
+这条命令先下载安装工具，再从正式仓库获取并安装当前版本。`InterviewTwin-installer` 存放下载的工具；`InterviewTwin-workspace` 是实际使用工作区，里面保存 Skill、人物资料与更新记录。安装成功后，用目标 Agent 打开 **InterviewTwin-workspace** 文件夹。
+
+将命令最后的 `cursor` 换成对应值即可选择其他 Agent：
+
+| 目标 Agent | `--host` 的值 | 工作区内的 Skill 目录 |
+|---|---|---|
+| Codex | `codex` | `.agents/skills/interviewtwin/` |
+| Cursor | `cursor` | `.cursor/skills/interviewtwin/` |
+| Claude Code | `claude-code` | `.claude/skills/interviewtwin/` |
+| WorkBuddy 本地代码项目 | `workbuddy` | `.codebuddy/skills/interviewtwin/` |
+
+如果要安装到已有项目，将 `--home` 后的路径替换成该项目的绝对路径并保留引号。当前通过 `--host` 选择 Agent，尚未提供交互选择菜单；这也是项目级安装，不会自动安装到电脑上的所有 Agent。
+
+Windows 用户可使用方式一；以上终端命令未作为 Windows 命令验证。网络访问失败时，检查 GitHub 连通性或使用下载后的本地包，详见[安装说明](INSTALL.md)。不要只用通用安装器复制 Skill 目录：本项目还需要独立人物资料初始化。
+
+若提示 `CERTIFICATE_VERIFY_FAILED`，说明 Python 的 HTTPS 证书校验未通过。macOS 使用 python.org 安装包时，可先运行对应 Python 应用目录中的 `Install Certificates.command`；其他安装方式请修复该 Python 环境的 CA 证书配置。修复后无需再次克隆，单独重跑上面 `&&` 后面的 `python3 ...` 命令即可，不要关闭证书校验。
+
+### 安装后开始使用
 
 安装完成并加载后，先展示实际可用人物和功能菜单，让使用者选择下一步。需要新建会话才能加载的宿主，可在新会话中说“使用 InterviewTwin”，进入同一菜单。
 
