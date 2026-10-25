@@ -3,9 +3,24 @@
 | 作者 | 赵家奇 |
 | 日期 | 2026-10-25 |
 | 事项 | 同一个仓库链接在不同 Agent 中安装、初始化人物及更新的执行入口 |
-| 版本 | v2.1 |
+| 版本 | v2.2 |
 
 # InterviewTwin 链接安装入口
+
+## 收到安装请求后直接执行
+
+用户只需说“安装这个链接的 Skill”。Agent先读取本文件，获取一次完整仓库，再审核并执行安装器；不需要创建新Skill、安装插件或反复列出仓库文件。
+
+在Cursor当前工作区执行（将工作区参数替换为实际绝对路径）：
+
+```sh
+python3 scripts/get.py --repo https://github.com/vanci444-hue/InterviewTwin --home /实际使用工作区 --host cursor
+```
+
+该命令将Skill安装到`.cursor/skills/interviewtwin/`，同时初始化`people/`人物资料，并保存原GitHub来源及更新工具。不要只复制SKILL.md。完成后检查实际版本与人物完整性，加载Skill后展示人物及功能菜单；若尚未发现Skill，重新打开当前工作区或新建会话。目录遵循[Cursor官方说明](https://cursor.com/docs/skills)。
+
+用户说“更新 InterviewTwin”时，从`.interviewtwin/installations/cursor.json`读取`updater.directory`，使用该目录的`get.py --update --home /实际使用工作区 --host cursor`；不需要用户重新提供链接。更新默认保留自建人物、原件、草稿及旧快照。
+
 
 ## 原始资料与人物版本（本轮生效）
 
@@ -40,7 +55,7 @@
 ## 安装
 
 1. 从当前用户给出的仓库链接读取本说明和 README，确认实际仓库；取得完整仓库或审核后的安装 ZIP 到临时目录。若网络、认证或读取受阻，报告实际原因，保留原安装，可使用本地包，不改用未知镜像。
-2. 确定当前宿主及使用工作区。Codex 使用 `codex`，Claude Code 使用 `claude-code`；WorkBuddy 的本地代码项目使用 `workbuddy`。不能仅凭电脑安装了某个 App 猜测当前宿主；无法确定时询问这一项。不要把作者的源码目录当接收者工作区。
+2. 确定当前宿主及使用工作区。Codex 使用 `codex`，Cursor 使用 `cursor`，Claude Code 使用 `claude-code`；WorkBuddy 的本地代码项目使用 `workbuddy`。不能仅凭电脑安装了某个 App 猜测当前宿主；无法确定时询问这一项。不要把作者的源码目录当接收者工作区。
 3. 检查 Python 3.10+、当前宿主所需的执行和文件权限。宿主要求的授权仍照常进行，不修改全局权限或跳过安全检查。
 4. 在下载内容中确认 `scripts/install.py`、`skills/interviewtwin/SKILL.md`、`profiles/zhaojiaqi/manifest.json` 存在。运行以下命令，将参数换成实际路径与宿主：
 
@@ -50,7 +65,7 @@ python3 scripts/get.py --repo https://github.com/OWNER/REPO --home /实际使用
 
 命令中的仓库必须替换为用户给出的真实来源。此入口会记录仓库和 ref，并保留后续更新工具。离线本地包可使用 `python3 scripts/install.py --source . --home /实际使用工作区 --host codex`，但记录的是本地路径；该路径删除后需重新提供来源，不能声称已建立 GitHub 更新链路。
 
-Claude Code 将 `--host` 改为 `claude-code`；WorkBuddy 本地代码项目改为 `workbuddy`。默认安装人物赵家奇；不在安装目录中保存用户定制人物。
+Cursor 将 `--host` 改为 `cursor`；Claude Code 将 `--host` 改为 `claude-code`；WorkBuddy 本地代码项目改为 `workbuddy`。默认安装人物赵家奇；不在安装目录中保存用户定制人物。
 
 5. 核验输出的能力版本、人物版本、安装位置及完整性。打开目标工作区，新建会话实际读取人物并回答“请介绍餐小美和你的职责”。若当前宿主不能刷新发现结果，应说明需要新建会话；不能把文件已安装说成已经加载。
 6. 保存本次真实源仓库、ref/commit（如能确认）、安装输出和使用验证结果。不得虚构已安装成功、虚构仓库地址或用作者本地资料补全缺失文件。

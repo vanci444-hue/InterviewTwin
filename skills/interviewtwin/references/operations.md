@@ -29,7 +29,7 @@ python3 .agents/skills/interviewtwin/scripts/twin.py --home . draft --person PER
 
 ## 读取与检查
 
-下面命令以使用工作区为当前目录，Skill 安装在 `.agents/skills/interviewtwin/`。Claude Code 对应 `.claude/skills/interviewtwin/`；其他宿主以实际导入位置为准，不猜测。以下都是 Codex 示例，从其他目录执行时替换为实际工作区和 Skill 的位置，路径含空格必须正确引用。
+下面命令以使用工作区为当前目录，Skill 安装在 `.agents/skills/interviewtwin/`。Cursor 对应 `.cursor/skills/interviewtwin/`；Claude Code 对应 `.claude/skills/interviewtwin/`；其他宿主以实际导入位置为准，不猜测。以下都是 Codex 示例，从其他目录执行时替换为实际工作区和 Skill 的位置，路径含空格必须正确引用。
 
 ```sh
 python3 .agents/skills/interviewtwin/scripts/twin.py --home . list

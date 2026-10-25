@@ -2,7 +2,7 @@
 """安装或更新本地 InterviewTwin 包，只使用 Python 标准库。
 
 --home 是独立使用工作区。能力进入 .agents/skills，人物资料进入 people，
-两者分开，因此升级能力不会覆盖创建者草稿。支持 Codex、Claude Code 与 WorkBuddy 代码项目目录；脚本不发布远程内容。
+两者分开，因此升级能力不会覆盖创建者草稿。支持 Codex、Cursor、Claude Code 与 WorkBuddy 代码项目目录；脚本不发布远程内容。
 安装成功只证明文件已核验；必须在宿主的新会话验证后才能报告可面试。
 """
 from __future__ import annotations
@@ -20,7 +20,7 @@ import sys
 import uuid
 
 
-HOST_DIRS = {"codex": ".agents", "claude-code": ".claude", "workbuddy": ".codebuddy"}
+HOST_DIRS = {"codex": ".agents", "cursor": ".cursor", "claude-code": ".claude", "workbuddy": ".codebuddy"}
 
 
 class InstallError(Exception):

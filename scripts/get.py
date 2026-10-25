@@ -117,7 +117,7 @@ def update_installed(home, host=None, profile=AUTO_PROFILE, fetch=download):
         if len(candidates) != 1:
             raise InstallError('无法唯一确定已安装宿主，请明确 --host；旧安装需先使用仓库入口补装一次')
         host = candidates[0].stem
-    if host not in ('codex', 'claude-code', 'workbuddy'):
+    if host not in ('codex', 'cursor', 'claude-code', 'workbuddy'):
         raise InstallError('不支持的宿主')
     receipt = read_json(records / f'{host}.json')
     if receipt.get('schema_version') != 1 or receipt.get('host') != host:
@@ -158,7 +158,7 @@ def main():
     p.add_argument('--update', action='store_true', help='使用已保存来源；默认更新能力和原分发人物')
     p.add_argument('--ref', default='HEAD')
     p.add_argument('--home', required=True)
-    p.add_argument('--host', choices=['codex','claude-code','workbuddy'], default=None)
+    p.add_argument('--host', choices=['codex','cursor','claude-code','workbuddy'], default=None)
     group = p.add_mutually_exclusive_group()
     group.add_argument('--profile')
     group.add_argument('--no-profile', action='store_true')
